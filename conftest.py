@@ -1,17 +1,14 @@
 from typing import Generator
 
 import pytest
-from faker import Faker
+from data.user import gen_user_data
 from methods.user_methods import UserMethods
 from models.user import CreatedUser
 
 
 @pytest.fixture()
 def user_data() -> dict[str, str]:
-    fake = Faker()
-    return {'email': fake.email(),
-            'password': fake.password(),
-            'name': fake.name()}
+    return gen_user_data()
 
 
 @pytest.fixture()

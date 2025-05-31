@@ -22,3 +22,12 @@ class UserMethods:
         response = requests.post(url=Entrypoints.login,
                                  data=user_data)
         return response.status_code, response.json()
+
+    @staticmethod
+    def update(update_data: dict[str, str],
+               access_token: str | None = None) -> tuple[int, dict[str, Any]]:
+        response = requests.patch(
+            url=Entrypoints.user,
+            data=update_data,
+            headers={'Authorization': access_token} if access_token else None)
+        return response.status_code, response.json()
