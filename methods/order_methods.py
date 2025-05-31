@@ -13,3 +13,9 @@ class OrderMethods:
                                  data={'ingredients': ingredients},
                                  headers={'Authorization': access_token} if access_token else None)
         return get_status_code_and_data(response)
+
+    @staticmethod
+    def get_orders(access_token: str | None = None) -> tuple[int, dict[str, Any] | str]:
+        response = requests.get(url=Entrypoints.orders,
+                                headers={'Authorization': access_token} if access_token else None)
+        return get_status_code_and_data(response)
