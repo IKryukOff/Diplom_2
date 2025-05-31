@@ -13,7 +13,9 @@ class TestCreateUser:
                         'параметров (email, пароль, имя)')
     def test_create_user_status_code_is_ok(self, user_data: dict[str, str]) -> None:
         status_code, response_data = UserMethods.register(user_data=user_data)
-        assert status_code == 200 and response_data['success'] is True
+        assert (status_code == 200 and
+                isinstance(response_data, dict) and
+                response_data['success'] is True)
 
     @allure.sub_suite('Тестирование возврата ошибки при создании уже существующего пользователя')
     @allure.title('Проверка того, что запрос возвращает сообщение "User already exists"')
@@ -23,6 +25,7 @@ class TestCreateUser:
                                                                  create_user: CreatedUser) -> None:
         status_code, response_data = UserMethods.register(user_data=create_user.register_data)
         assert (status_code == 403 and
+                isinstance(response_data, dict) and
                 response_data['success'] is False and
                 response_data['message'] == 'User already exists')
 
@@ -37,5 +40,6 @@ class TestCreateUser:
         user_data.pop(excluded_field)
         status_code, response_data = UserMethods.register(user_data=user_data)
         assert (status_code == 403 and
+                isinstance(response_data, dict) and
                 response_data['success'] is False and
                 response_data['message'] == 'Email, password and name are required fields')

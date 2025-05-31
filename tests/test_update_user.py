@@ -20,7 +20,9 @@ class TestUpdateUser:
         status_code, response_data = UserMethods.update(
             update_data={update_field: gen_user_data()[update_field]},
             access_token=create_user.access_token)
-        assert status_code == 200 and response_data['success'] is True
+        assert (status_code == 200 and
+                isinstance(response_data, dict) and
+                response_data['success'] is True)
 
     @allure.sub_suite('Тестирование возврата ошибки при смене информации о пользователе без '
                       'предварительной авторизации')
@@ -35,5 +37,6 @@ class TestUpdateUser:
         status_code, response_data = UserMethods.update(
             update_data={update_field: gen_user_data()[update_field]})
         assert (status_code == 401 and
+                isinstance(response_data, dict) and
                 response_data['success'] is False and
                 response_data['message'] == 'You should be authorised')

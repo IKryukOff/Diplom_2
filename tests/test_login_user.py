@@ -13,7 +13,9 @@ class TestLoginUser:
                         'параметров (email, пароль)')
     def test_login_user_status_code_is_ok(self, create_user: CreatedUser) -> None:
         status_code, response_data = UserMethods.login(user_data=create_user.login_data)
-        assert status_code == 200 and response_data['success'] is True
+        assert (status_code == 200 and
+                isinstance(response_data, dict) and
+                response_data['success'] is True)
 
     @allure.sub_suite('Тестирование возврата ошибки при некорректной авторизации пользователя')
     @allure.title('Проверка того, что система вернёт ошибку, если неправильно указать email или '
@@ -26,5 +28,6 @@ class TestLoginUser:
         status_code, response_data = UserMethods.login(user_data={**create_user.login_data,
                                                                   incorrect_field: 'incorrect'})
         assert (status_code == 401 and
+                isinstance(response_data, dict) and
                 response_data['success'] is False and
                 response_data['message'] == 'email or password are incorrect')
